@@ -68,8 +68,6 @@ foreach ($aCharacters as $aCharacter) {
 
 //print_r($aBoard);
 
-
-
 // 4. Afficher le plateau de jeu proprement
 // [.][.][.]
 // [.][.][.]
