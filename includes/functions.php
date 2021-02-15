@@ -10,12 +10,12 @@
 function displayPlayers($players): void
 {
     foreach ($players as $player) {
-        echo $player['name'] . ' [HP: ' . $player['health'] . '] [S: ' . $player['strength'] . ']';
-        if (array_key_exists('magic', $player)) {
-            echo ' [M:' . $player['magic'] . ']';
+        echo $player['name'] . ': ' .  $player['type']['class'] . PHP_EOL . 'Stats: [HP: ' . $player['type']['health'] . '] [S: ' . $player['type']['strength'] . ']' . PHP_EOL;
+        if (array_key_exists('magic', $player['type'])) {
+            echo '[M:' . $player['type']['magic'] . ']';
         }
-        if (array_key_exists('stealth', $player)) {
-            echo ' [ST:' . $player['stealth'] . ']';           
+        if (array_key_exists('stealth', $player['type'])) {
+            echo '[ST:' . $player['type']['stealth'] . ']';           
         }
         echo PHP_EOL;
     }
