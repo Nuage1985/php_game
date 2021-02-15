@@ -6,11 +6,31 @@ ini_set('display_errors', 1);
 //Functions
 include_once 'includes/functions.php';
 
+define('WARRIOR', array(
+    'class' => 'Warrior',
+    'health' => 100,
+    'strength' => 50,
+));
+
+define('WIZARD', array(
+    'class' => 'Wizard',
+    'health' => 80,
+    'strength' => 20,
+    'magic' => 200,
+));
+
+define('STEALTH', array(
+    'class' => 'Stealth',
+    'health' => 50,
+    'strength' => 8,
+    'stealth' => 800,
+));
+
 //constantes
 //const SIZE_X = 5;
 //const SIZE_Y = 5;
-define('SIZE_X',10);
-define('SIZE_Y',10);
+define('SIZE_X', 10);
+define('SIZE_Y', 10);
 
 // PHP_EOL const équivalente à "\n" = saut de ligne
 echo '== Début du programme ==' . PHP_EOL;
@@ -41,22 +61,20 @@ for ($y = 0; $y < SIZE_Y; $y++) {
 //2. créer les personnages
 $aAragorn = [
     'name' => 'Aragorn',
-    'health' => 100,
-    'strength' => 50,
+    'type' => WARRIOR,
+    'position' => ''
 ];
 
 $aGandalf = [
     'name' => 'Gandalf',
-    'health' => 80,
-    'strength' => 20,
-    'magic' => 200,
+    'type' => WIZARD,
+    'position' => ''
 ];
 
 $aFrodo = [
     'name' => 'Frodo',
-    'health' => 50,
-    'strength' => 8,
-    'stealth' => 800,
+    'type' => STEALTH,
+    'position' => ''
 ];
 
 $aCharacters = [
@@ -75,7 +93,11 @@ echo displayPlayers($aCharacters);
 // 3. Positionner ,aléatoirement, nos joueurs dans le plateau
 // ex: $board[y][x] = $aGandalf
 foreach ($aCharacters as $aCharacter) {
-    $aBoard[rand(0, (SIZE_Y - 1))][rand(0, (SIZE_X)-1)] = $aCharacter;
+    $y = rand( 0, (SIZE_Y - 1) );
+    $x = rand( 0, (SIZE_X - 1) );
+    $aBoard[$y][$x] = $aCharacter;
+    echo '[' . $x . '/' . $y . ']: ' . $aCharacter['name'] . PHP_EOL;
+    echo PHP_EOL;
 }
 
 //print_r($aBoard);
