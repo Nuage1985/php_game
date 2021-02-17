@@ -3,28 +3,37 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+
 //Functions
 include_once 'includes/functions.php';
 
-define('WARRIOR', array(
-    'class' => 'Warrior',
-    'health' => 100,
-    'strength' => 50,
-));
+define('TYPE_WARRIOR', [
+    'name' => 'Warrior',
+    'min_health' => 60,
+    'max_health' => 100,
+    'min_strength' => 50,
+    'max_strength' => 80,
+]);
 
-define('WIZARD', array(
-    'class' => 'Wizard',
-    'health' => 80,
-    'strength' => 20,
-    'magic' => 200,
-));
+define('TYPE_WIZARD', [
+    'name' => 'Wizard',
+    'min_health' => 40,
+    'max_health' => 80,
+    'min_strength' => 25,
+    'max_strength' => 45,
+    'min_magic' => 150,
+    'max_magic' => 200,
+]);
 
-define('STEALTH', array(
-    'class' => 'Stealth',
-    'health' => 50,
-    'strength' => 8,
-    'stealth' => 800,
-));
+define('TYPE_STEALTH', [
+    'name' => 'Stealth',
+    'min_health' => 25,
+    'max_health' => 50,
+    'min_strength' => 8,
+    'max_strength' => 20,
+    'min_stealth' => 400,
+    'max_stealth' => 800,
+]);
 
 //constantes
 //const SIZE_X = 5;
@@ -35,6 +44,7 @@ define('SIZE_Y', 10);
 // PHP_EOL const équivalente à "\n" = saut de ligne
 echo '== Début du programme ==' . PHP_EOL;
 echo PHP_EOL;
+
 
 /*
         1. Créer le plateau de jeu
@@ -56,51 +66,48 @@ for ($y = 0; $y < SIZE_Y; $y++) {
     }
 }
 
-//print_r($aBoard);
 
 //2. créer les personnages
 $aAragorn = [
     'name' => 'Aragorn',
-    'type' => WARRIOR,
-    'position' => ''
+    'type' => TYPE_WARRIOR,
+    'position' => ['x' => null, 'y' => null,],
 ];
 
 $aGandalf = [
     'name' => 'Gandalf',
-    'type' => WIZARD,
-    'position' => ''
+    'type' => TYPE_WIZARD,
+    'position' => ['x' => null, 'y' => null,],
 ];
 
 $aFrodo = [
     'name' => 'Frodo',
-    'type' => STEALTH,
-    'position' => ''
+    'type' => TYPE_STEALTH,
+    'position' => ['x' => null, 'y' => null,],
 ];
+
 
 $aCharacters = [
     $aAragorn,
     $aGandalf,
-    $aFrodo
+    $aFrodo,
 ];
 
-//print_r($aPlayers);
 
-// Aragorn : [H:100] [S:50]
-// Gandalf : [H:80] [S:20] [M:200]
-// Affichage dynamique des joueurs (appel de la fonction displayPlayers)
-echo displayPlayers($aCharacters);
+//Création des stats des personnages
+foreach ($aCharacters as &$aCharacter) {
+    buildStats($aCharacter);
+}
+unset($aCharacter); // Supprimer l'effet de bord
+
 
 // 3. Positionner ,aléatoirement, nos joueurs dans le plateau
 // ex: $board[y][x] = $aGandalf
 foreach ($aCharacters as $aCharacter) {
-    $y = rand( 0, (SIZE_Y - 1) );
-    $x = rand( 0, (SIZE_X - 1) );
-    $aBoard[$y][$x] = $aCharacter;
-    echo '[' . $x . '/' . $y . ']: ' . $aCharacter['name'] . PHP_EOL;
-    echo PHP_EOL;
+    $aBoard[$aCharacter['position']['y']][$aCharacter['position']['x']] = $aCharacter;
 }
+echo PHP_EOL;
 
-//print_r($aBoard);
 
 // 4. Afficher le plateau de jeu proprement avec function displayBoard
 // [.][.][.]
@@ -109,7 +116,7 @@ foreach ($aCharacters as $aCharacter) {
 echo displayBoard($aBoard);
 echo PHP_EOL;
 
-//Nouvel appel de la fonction displayPlayers
+// Affichage dynamique des joueurs (appel de la fonction displayPlayers)
 echo displayPlayers($aCharacters);
 
 echo '== Fin du programme ==' . "\n";
