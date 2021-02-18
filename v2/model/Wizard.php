@@ -1,91 +1,66 @@
 <?php
+
+include_once 'model/Character.php';
+
+
+
 /*
-* Référentiel de la classe Wizard
+* Référentiel de la classe Warrior
 * Convention de code : PascalCase
+* extends = hérite des propriétés publics/protégés (un seul héritage possible à la fois)
+* final = non héritable (non obligatoire)
 */
-class Wizard
+final class Wizard extends Character
 {
+    // Constantes de classes (accessible via Wizard::XXX ou self::XXX)
+    public const FIREBALL_DAMAGE = 60;
+    public const FIREBALL_COST = 80;
+    public const HEAL_RESTORE = 50;
+    public const HEAL_COST = 50;
+
     /*
     * Attributs/propriétés en camelCase
     * Convenion de code : camelCase
     */
-    private $name;
-    private $health;
-    private $strength;
     private $magic;
 
-    public function __construct(string $sName)
-    {
-        $this->name = $sName;
-    }
 
     /*
     * Comportements/Fonction
     * Convention de code : camelCase
     */
-    public function display()
+    public function __construct(string $sName)
     {
-        print_r($this);
+        $this->name = $sName;
     }
 
-    /**
-     * Get /*
-     */
-    public function getName()
+    public function fireball(Character $b): void
     {
-        return $this->name;
+        if ($this->getMagic() < self::FIREBALL_COST) {
+            echo "Not enough Mana!";
+            return;
+        }
+
+        echo sprintf('(Fireball spell) %s >> %s', $this->getName(), $b->getName()) . PHP_EOL;
+        $b->setHealth($b->getHealth() - Wizard::FIREBALL_DAMAGE);
+        $this->setMagic($this->getMagic() - self::FIREBALL_COST);
     }
 
-    /**
-     * Set /*
-     *
-     * @return  self
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
 
-        return $this;
+    public function heal(): void
+    {
+        if ($this->getMagic() < self::HEAL_COST) {
+            echo "Not enough Mana!";
+            return;
+        }
+        echo sprintf('(Heal spell) %s', $this->getName()) . PHP_EOL;
+        $this->setHealth($this->getHealth() + self::HEAL_RESTORE);
+        $this->setMagic($this->getMagic() - self::HEAL_COST);
     }
 
-    /**
-     * Get the value of health
-     */
-    public function getHealth()
+    public function __toString()
     {
-        return $this->health;
-    }
-
-    /**
-     * Set the value of health
-     *
-     * @return  self
-     */
-    public function setHealth($health)
-    {
-        $this->health = $health;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of strength
-     */
-    public function getStrength()
-    {
-        return $this->strength;
-    }
-
-    /**
-     * Set the value of strength
-     *
-     * @return  self
-     */
-    public function setStrength($strength)
-    {
-        $this->strength = $strength;
-
-        return $this;
+        return parent::__toString() . ' [M: ' . $this->magic . ']';
     }
 
     /**

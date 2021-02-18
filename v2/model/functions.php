@@ -72,3 +72,5 @@ function displayBoard(array $board): void
         echo PHP_EOL;
     }
 }
+
+
